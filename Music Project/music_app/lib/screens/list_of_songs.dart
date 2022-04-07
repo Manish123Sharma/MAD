@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/models/song.dart';
-import 'package:music_app/utils/api_client.dart';
+// import 'package:music_app/models/song.dart';
+// import 'package:music_app/utils/api_client.dart';
 // import 'package:music_app_class/models/song.dart';
 // import 'package:music_app_class/utils/api_client.dart';
 import 'package:audioplayers/audioplayers.dart';
+
+// import 'package:music_app/lib/models/song.dart';
+import 'package:music_app/models/song.dart';
+import '../utils/api_client.dart';
 
 class ListOfSongs extends StatefulWidget {
   const ListOfSongs({Key? key}) : super(key: key);
