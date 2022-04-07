@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:music_app/screens/Player.dart';
 import 'package:music_app/screens/list_of_songs.dart';
 
 void main() async {
