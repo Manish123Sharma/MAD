@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/models/song.dart';
 import 'package:music_app/utils/api_client.dart';
+// import 'package:music_app_class/models/song.dart';
+// import 'package:music_app_class/utils/api_client.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class ListOfSongs extends StatefulWidget {
@@ -10,18 +12,17 @@ class ListOfSongs extends StatefulWidget {
   State<ListOfSongs> createState() => _ListOfSongsState();
 }
 
-ApiClient client = ApiClient();
-
 class _ListOfSongsState extends State<ListOfSongs> {
   bool isPlay = false;
   List<Song> songs = [];
   int currentSongIndex = 0;
   AudioPlayer audioPlayer = AudioPlayer();
+  TextEditingController searchCtrl = TextEditingController();
+  ApiClient client = ApiClient();
   dynamic err;
   @override
   void initState() {
     // TODO: implement initState
-
     audioPlayer.onPlayerCompletion.listen((event) {
       print("song is completed");
       songs[currentSongIndex].isPlaying = false;
@@ -62,7 +63,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
             subtitle: Text(songs[index].artistName),
             trailing: IconButton(
                 onPressed: () async {
-                  print(isPlay);
+                  // print(isPlay);
                   isPlay
                       ? await audioPlayer.pause()
                       : await audioPlayer.play(songs[index].audio);
@@ -87,9 +88,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
     );
   }
 
-  TextEditingController searchCtrl = TextEditingController();
-
-  _searchSongs() {
+  _searcSongs() {
     String searchValue = searchCtrl.text;
     client.getSongs(getSongsList, getSongsError, searchValue: searchValue);
   }
@@ -97,27 +96,31 @@ class _ListOfSongsState extends State<ListOfSongs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(100),
+      //   child: AppBar(
+
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 100,
         title: Container(
-          // color: Colors.white,
           margin: EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10), color: Colors.white),
           child: TextField(
             controller: searchCtrl,
             decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () => {print("Clicked")},
-                ),
-                labelText: 'Search Here',
-                hintText: 'Type to Search'),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () => _searcSongs(),
+              ),
+              labelText: "Search Here",
+              hintText: "Type to Search",
+            ),
           ),
+          // title: Text("Songs"),
         ),
-        // title: Text("Songs"),
       ),
       body: Container(
         child: songs.isEmpty ? _showLoading() : _printSong(),
