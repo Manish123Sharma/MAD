@@ -1,18 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/models/song.dart';
 
 class Player extends StatefulWidget {
-  const Player({ Key? key }) : super(key: key);
+  Song song;
+  Player(this.song);
 
   @override
-  State<Player> createState() => _PlayerState();
+  _PlayerState createState() => _PlayerState();
 }
 
 class _PlayerState extends State<Player> {
   @override
   Widget build(BuildContext context) {
+    Size deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        color: const Color.fromARGB(255, 4, 91, 241),
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(50),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.song.image),
+            ),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                  Colors.yellow,
+                  Colors.orangeAccent,
+                  Colors.deepOrangeAccent
+                ])),
+            height: deviceSize.height / 2,
+            width: deviceSize.width,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.skip_next, size: 30,),
+                onPressed: () {},
+                ),
+            ],
+          )
+        ],
       ),
     );
   }
