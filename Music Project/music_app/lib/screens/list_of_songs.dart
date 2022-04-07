@@ -10,6 +10,8 @@ class ListOfSongs extends StatefulWidget {
   State<ListOfSongs> createState() => _ListOfSongsState();
 }
 
+ApiClient client = ApiClient();
+
 class _ListOfSongsState extends State<ListOfSongs> {
   bool isPlay = false;
   List<Song> songs = [];
@@ -19,7 +21,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
   @override
   void initState() {
     // TODO: implement initState
-    ApiClient client = ApiClient();
+
     audioPlayer.onPlayerCompletion.listen((event) {
       print("song is completed");
       songs[currentSongIndex].isPlaying = false;
@@ -31,7 +33,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
   pauseOtherSongs() {
     for (int i = 0; i < songs.length; i++) {
       if (i != currentSongIndex) {
-        songs[i].isPlaying = false; 
+        songs[i].isPlaying = false;
       }
     }
   }
@@ -60,7 +62,6 @@ class _ListOfSongsState extends State<ListOfSongs> {
             subtitle: Text(songs[index].artistName),
             trailing: IconButton(
                 onPressed: () async {
-                  
                   print(isPlay);
                   isPlay
                       ? await audioPlayer.pause()
@@ -86,11 +87,37 @@ class _ListOfSongsState extends State<ListOfSongs> {
     );
   }
 
+  TextEditingController searchCtrl = TextEditingController();
+
+  _searchSongs() {
+    String searchValue = searchCtrl.text;
+    client.getSongs(getSongsList, getSongsError, searchValue: searchValue);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Songs"),
+        toolbarHeight: 80,
+        title: Container(
+          // color: Colors.white,
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: TextField(
+            controller: searchCtrl,
+            decoration: InputDecoration(
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () => {print("Clicked")},
+                ),
+                labelText: 'Search Here',
+                hintText: 'Type to Search'),
+          ),
+        ),
+        // title: Text("Songs"),
       ),
       body: Container(
         child: songs.isEmpty ? _showLoading() : _printSong(),

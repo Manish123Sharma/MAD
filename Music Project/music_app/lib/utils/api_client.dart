@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import '../models/song.dart';
 
 class ApiClient {
-  void getSongs(Function successCallBack, Function failCallBack) {
-    String URL = "https://itunes.apple.com/search?term=ap+dhillon&limit=25";
+  void getSongs(Function successCallBack, Function failCallBack, {String searchValue = "ap dhillon"}) {
+    String URL = "https://itunes.apple.com/search?term=$searchValue&limit=25";
     Future<http.Response> future = http.get(Uri.parse(URL));
     future.then((response) {
       String json = response.body;
