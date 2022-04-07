@@ -20,7 +20,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
   @override
   void initState() {
     // TODO: implement initState
-    APIClient client = APIClient();
+    ApiClient client = ApiClient();
     client.getSongs(getSongList, getSongError);
   }
 
