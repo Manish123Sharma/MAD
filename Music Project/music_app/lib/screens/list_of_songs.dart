@@ -20,13 +20,20 @@ class _ListOfSongsState extends State<ListOfSongs> {
   void initState() {
     // TODO: implement initState
     ApiClient client = ApiClient();
-
-    client.getSongs(getSongsList, getSongsError);
     audioPlayer.onPlayerCompletion.listen((event) {
+      print("song is completed");
       songs[currentSongIndex].isPlaying = false;
-      // onComplete();
       setState(() {});
     });
+    client.getSongs(getSongsList, getSongsError);
+  }
+
+  pauseOtherSongs() {
+    for (int i = 0; i < songs.length; i++) {
+      if (i != currentSongIndex) {
+        songs[i].isPlaying = false; 
+      }
+    }
   }
 
   getSongsList(List<Song> songs) {
@@ -53,6 +60,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
             subtitle: Text(songs[index].artistName),
             trailing: IconButton(
                 onPressed: () async {
+                  
                   print(isPlay);
                   isPlay
                       ? await audioPlayer.pause()
@@ -61,6 +69,7 @@ class _ListOfSongsState extends State<ListOfSongs> {
                   songs[index].isPlaying =
                       songs[index].isPlaying ? false : true;
                   currentSongIndex = index;
+                  pauseOtherSongs();
                   setState(() {});
                 },
                 icon: songs[index].isPlaying
