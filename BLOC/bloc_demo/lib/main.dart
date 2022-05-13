@@ -12,7 +12,7 @@ void main() {
     // ),
     home: BlocProvider(
         create: ((context) => CounterCubit(CustomCubitState(0, 0))),
-        child: CountApp(),
+        child: const CountApp(),
         )),
   );
 }
